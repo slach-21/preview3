@@ -207,6 +207,8 @@
   }
   .book-form input::placeholder{color:rgba(94,86,69,.65)}
   .book-form input:focus,.book-form select:focus{outline:none;border-bottom-color:var(--brass);box-shadow:0 2px 0 0 var(--brass)}
+  .book-form input,.book-form select{color-scheme:light}
+  .book-form select option{background:var(--paper);color:var(--ink)}
   .book-form input[type="date"]{min-height:46px}
   .book-form input[type="date"]::-webkit-calendar-picker-indicator{opacity:.55;cursor:pointer}
   .bf-note{margin-top:12px;font-family:var(--fr);font-style:italic;font-size:13px;color:var(--ink2);text-align:center}
@@ -252,9 +254,108 @@
   .g-more{margin-top:30px;display:flex;gap:24px;flex-wrap:wrap;font-size:13.5px}
   .g-more a{font-weight:700;border-bottom:2px solid var(--brass)}
   .g-more a:hover{color:var(--brass)}
+
+  /* intro preloader */
+  .intro{position:fixed;inset:0;z-index:200;background:var(--dark);display:none;place-items:center}
+  .intro.on{display:grid;animation:iOut .4s ease 1.3s forwards}
+  .intro .box{text-align:center;width:min(70vw,300px)}
+  .intro .imk{width:46px;height:46px;border:1.5px solid var(--brass-b);margin:0 auto;display:grid;place-items:center;transform:rotate(45deg);opacity:0}
+  .intro .imk span{transform:rotate(-45deg);font-family:var(--fr);font-style:italic;font-weight:600;font-size:24px;color:var(--brass-b)}
+  .intro .nm{font-size:10px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;color:var(--bone2);margin:10px 0 20px;opacity:0}
+  .intro.on .imk{animation:iIn .35s ease .05s forwards}
+  .intro.on .nm{animation:iIn .35s ease .15s forwards}
+  .intro .bar{height:2px;background:rgba(240,233,218,.14);position:relative}
+  .intro .bar i{position:absolute;inset:0;background:var(--brass-b);transform:scaleX(0);transform-origin:left}
+  .intro.on .bar i{animation:iBar .9s cubic-bezier(.4,0,.2,1) .2s forwards}
+  .intro .cut{position:absolute;top:50%;left:0;width:19px;height:19px;color:var(--brass-b);transform:translate(-4px,-50%);opacity:0}
+  .intro.on .cut{animation:iCutIn .01s linear .2s forwards, iCut .9s cubic-bezier(.4,0,.2,1) .2s forwards, iCutOut .18s linear 1.12s forwards}
+  @keyframes iIn{to{opacity:1}}
+  @keyframes iBar{to{transform:scaleX(1)}}
+  @keyframes iCutIn{to{opacity:1}}
+  @keyframes iCut{to{left:100%}}
+  @keyframes iCutOut{to{opacity:0}}
+  @keyframes iOut{to{opacity:0;visibility:hidden}}
+
+  /* anchor nav: desktop only */
+  .anchors{display:none}
+  @media(min-width:1000px){
+    .anchors{display:flex;gap:26px;margin:0 auto;padding:0 20px}
+    .anchors a{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--bone2);
+      padding:6px 0;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+    .anchors a:hover{color:var(--bone)}
+    .anchors a.cur{color:var(--brass-b);border-bottom-color:var(--brass-b)}
+  }
+  section[id]{scroll-margin-top:66px}
+
+  /* mobile burger + fullscreen menu */
+  .mburger{width:40px;height:40px;flex:none;border:1.5px solid rgba(240,233,218,.28);background:none;display:grid;place-items:center;cursor:pointer;padding:0}
+  .mburger div{display:grid;gap:5px}
+  .mburger span{display:block;width:18px;height:1.8px;background:var(--brass-b);transition:.25s}
+  .menu-open .mburger span:nth-child(1){transform:translateY(6.8px) rotate(45deg)}
+  .menu-open .mburger span:nth-child(2){opacity:0}
+  .menu-open .mburger span:nth-child(3){transform:translateY(-6.8px) rotate(-45deg)}
+  @media(min-width:1000px){.mburger{display:none}}
+  @media(max-width:999px){.bar-right > .lang{display:none}}
+  .mmenu{position:fixed;inset:0;z-index:60;background:var(--dark);color:var(--bone);display:none;flex-direction:column;padding:0 var(--pad) 22px}
+  .menu-open .mmenu{display:flex}
+  .menu-open{overflow:hidden}
+  .mm-top{display:flex;justify-content:space-between;align-items:center;height:58px}
+  .mm-brand{display:flex;align-items:center;gap:10px}
+  .mono-x{font-family:var(--fr);font-style:italic;font-weight:600;font-size:17px;color:var(--brass-b);border:1.5px solid var(--brass-b);width:30px;height:30px;display:grid;place-items:center}
+  .mm-brand b{font-family:var(--anton);font-weight:400;font-size:15px;letter-spacing:.12em}
+  .mm-close{width:40px;height:40px;border:1.5px solid rgba(240,233,218,.28);background:none;color:var(--bone);font-size:15px;cursor:pointer}
+  .mm-nav{flex:1;display:flex;flex-direction:column;justify-content:center;gap:2px}
+  .mm-nav a{display:flex;align-items:baseline;gap:14px;padding:9px 0}
+  .mm-nav a s{font-family:var(--fr);font-style:italic;font-size:13px;color:var(--brass);text-decoration:none;min-width:26px}
+  .mm-nav a b{font-family:var(--anton);font-weight:400;font-size:clamp(26px,7.2vw,34px);letter-spacing:.05em;text-transform:uppercase}
+  .mm-nav a:active b{color:var(--brass-b)}
+  .menu-open .mm-nav a{transform:translateY(28px);opacity:0;animation:mmUp .45s cubic-bezier(.2,.8,.2,1) forwards}
+  .menu-open .mm-nav a:nth-child(1){animation-delay:.04s}.menu-open .mm-nav a:nth-child(2){animation-delay:.1s}
+  .menu-open .mm-nav a:nth-child(3){animation-delay:.16s}.menu-open .mm-nav a:nth-child(4){animation-delay:.22s}
+  .menu-open .mm-nav a:nth-child(5){animation-delay:.28s}.menu-open .mm-nav a:nth-child(6){animation-delay:.34s}
+  @keyframes mmUp{to{transform:none;opacity:1}}
+  .mm-foot{display:grid;gap:12px;justify-items:center}
+  .mm-lang{display:flex !important}
+  .mm-cta{display:block;width:100%;text-align:center;background:var(--brass-b);color:var(--dark);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:16px}
+  .mm-cta:active{background:var(--bone)}
+  .mm-tel{color:var(--bone2);font-size:13.5px}
+  @media(prefers-reduced-motion:reduce){.menu-open .mm-nav a{animation:none;transform:none;opacity:1}}
+
+  /* address + talk buttons */
+  .bf-row.one{grid-template-columns:1fr}
+  .maplink{display:inline-flex;align-items:center;gap:7px;margin-top:9px;font-size:12.5px;font-weight:700;color:var(--brass);border-bottom:1px solid transparent}
+  .maplink:hover{border-bottom-color:var(--brass)}
+  .maplink.off{opacity:.45;pointer-events:none}
+  .talk{margin-top:26px;border-top:1px solid rgba(24,19,9,.2);padding-top:20px}
+  .talk-t{font-family:var(--fr);font-style:italic;font-size:15px;color:var(--ink2);margin-bottom:14px}
+  .talk-btns{display:flex;flex-wrap:wrap;gap:10px}
+  .talk-btns .btn{padding:13px 18px;font-size:12.5px;gap:9px}
+  .talk-wa svg{color:var(--brass)}
+  .talk-wa:hover svg{color:currentColor}
 </style>
 </head>
 <body>
+
+<!-- intro preloader: plays once per session, skipped for reduced-motion -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="box">
+    <div class="imk"><span>M</span></div>
+    <div class="nm">Mekan Tan &middot; Mobile Barber</div>
+    <div class="bar"><i></i><svg class="cut" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 8.5 20 20M8.5 15.5 20 4"/></svg></div>
+  </div>
+</div>
+<script>
+(function(){
+  var el=document.getElementById('intro');
+  var reduce=false, seen=false;
+  try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+  try{seen=!!sessionStorage.getItem('mt_intro')}catch(e){}
+  if(reduce||seen){el.parentNode.removeChild(el);return}
+  try{sessionStorage.setItem('mt_intro','1')}catch(e){}
+  el.classList.add('on');
+  setTimeout(function(){el.parentNode&&el.parentNode.removeChild(el)},1900);
+})();
+</script>
 
 <header>
   <div class="wrap bar">
@@ -262,16 +363,50 @@
       <span class="mono">M</span>
       <span><b>Mekan Tan</b><small>Mobile Barber · Estonia</small></span>
     </a>
+    <nav class="anchors" aria-label="Sections">
+      <a href="#how">How it works</a>
+      <a href="#prices">Prices</a>
+      <a href="#craft">The craft</a>
+      <a href="#work">Gallery</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#area">Contact</a>
+    </nav>
     <div class="bar-right">
       <div class="lang" role="group" aria-label="Language">
         <button class="on" aria-current="true">EN</button>
         <button data-lang="RU">RU</button>
         <button data-lang="ET">ET</button>
       </div>
+      <button class="mburger" id="mburger" aria-label="Menu" aria-expanded="false" onclick="toggleMenu()"><div><span></span><span></span><span></span></div></button>
       <a class="btn btn-solid" style="border-color:var(--brass-b);background:var(--brass-b);color:var(--dark)" href="#book">Book</a>
     </div>
   </div>
 </header>
+
+<!-- mobile fullscreen menu -->
+<div class="mmenu" id="mmenu" aria-hidden="true">
+  <div class="mm-top">
+    <span class="mm-brand"><span class="mono-x">M</span><b>MEKAN&nbsp;TAN</b></span>
+    <button class="mm-close" aria-label="Close menu" onclick="toggleMenu()">✕</button>
+  </div>
+  <nav class="mm-nav" aria-label="Menu">
+    <a href="#how" onclick="toggleMenu()"><s>01</s><b>How it works</b></a>
+    <a href="#prices" onclick="toggleMenu()"><s>02</s><b>Prices</b></a>
+    <a href="#craft" onclick="toggleMenu()"><s>03</s><b>The craft</b></a>
+    <a href="#work" onclick="toggleMenu()"><s>04</s><b>Gallery</b></a>
+    <a href="#reviews" onclick="toggleMenu()"><s>05</s><b>Reviews</b></a>
+    <a href="#area" onclick="toggleMenu()"><s>06</s><b>Contact</b></a>
+  </nav>
+  <div class="mm-foot">
+    <div class="lang mm-lang" role="group" aria-label="Language">
+      <button class="on" aria-current="true">EN</button>
+      <button data-lang="RU">RU</button>
+      <button data-lang="ET">ET</button>
+    </div>
+    <a class="mm-cta" href="#book" onclick="toggleMenu()">Book a visit</a>
+    <a class="mm-tel" href="tel:+37253082235">+372 5308 2235</a>
+  </div>
+</div>
 
 <!-- ================= HERO ================= -->
 <section class="hero grain on-dark" id="top">
@@ -398,7 +533,7 @@
       <b>5.0</b>
       <span class="stars">★★★★★</span>
       <span class="sub">27 Google reviews</span>
-      <a class="btn g-write" href="#" rel="noopener">Write a review</a>
+      <a class="btn g-write" href="https://maps.app.goo.gl/WuSUHCPLU9qLECm3A" target="_blank" rel="noopener">Write a review</a>
     </div>
     <div class="g-grid rv">
       <article class="gcard">
@@ -420,8 +555,7 @@
         <div class="gfoot">Posted on Google</div>
       </article>
     </div>
-    <!-- PLACEHOLDER: link to the real Google Business Profile -->
-    <div class="g-more rv"><a href="#" rel="noopener">Read all reviews on Google</a><a href="https://www.instagram.com/turkish_barber_mekan/" target="_blank" rel="noopener">Client stories on Instagram</a></div>
+    <div class="g-more rv"><a href="https://maps.app.goo.gl/WuSUHCPLU9qLECm3A" target="_blank" rel="noopener">Read all reviews on Google</a><a href="https://www.instagram.com/turkish_barber_mekan/" target="_blank" rel="noopener">Client stories on Instagram</a></div>
   </div>
 </section>
 
@@ -434,7 +568,8 @@
     </div>
     <p class="area-note rv">Somewhere nearby but not on the list? Ask — the chair travels.</p>
     <div class="contact-grid rv">
-      <div class="crow"><b>Phone / WhatsApp</b><a href="tel:+37253082235">+372 5308 2235</a></div>
+      <div class="crow"><b>Phone</b><a href="tel:+37253082235">+372 5308 2235</a></div>
+      <div class="crow"><b>WhatsApp</b><a href="https://wa.me/37253082235?text=Hi!%20I%27d%20like%20to%20book%20a%20haircut." target="_blank" rel="noopener">Write to us directly ↗</a></div>
       <div class="crow"><b>Instagram</b><a href="https://www.instagram.com/turkish_barber_mekan/" target="_blank" rel="noopener">@turkish_barber_mekan</a></div>
       <div class="crow"><b>Booking</b><a href="#book">Online 24/7 — right here on the site</a></div>
       <div class="crow"><b>Hours</b><span>Flexible — book the slot that suits you</span></div>
@@ -450,16 +585,35 @@
       <div class="book-side">
         <h2 class="disp" style="font-size:clamp(30px,5.5vw,46px);margin-bottom:14px">Half a minute.<br><em class="it" style="color:var(--brass)">That's all.</em></h2>
         <p style="color:var(--ink2);max-width:40ch;font-size:15px">Pick a service and a time — you'll get a confirmation by SMS. No apps, no accounts, no prepayment.</p>
+        <div class="talk">
+          <p class="talk-t">Not a fan of forms? Just call or write —</p>
+          <div class="talk-btns">
+            <a class="btn talk-wa" href="https://wa.me/37253082235?text=Hi!%20I%27d%20like%20to%20book%20a%20haircut." target="_blank" rel="noopener">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.4A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-2.9.8.8-2.8-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.4-3c-.3-.4 0-.5.1-.7l.4-.5c.1-.2.2-.3.3-.5v-.5c0-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.2Z"/></svg>
+              WhatsApp
+            </a>
+            <a class="btn" href="tel:+37253082235">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+              +372 5308 2235
+            </a>
+          </div>
+        </div>
       </div>
       <!-- STATIC MOCK of the in-house booking flow (functionality comes with the CRM) -->
       <form class="book-form" onsubmit="return false" aria-label="Booking (preview mock)">
-        <div class="bf-row">
+        <div class="bf-row one">
           <label>Service
             <select><option>Haircut — 30€</option><option>Beard trim — 25€</option><option>Haircut + beard — 50€</option><option>Kids' haircut — 25€</option><option>Father + son — 50€</option><option>Two friends — 55€</option></select>
           </label>
-          <label>Area
-            <select><option>Viimsi</option><option>Tallinn</option><option>Pirita</option><option>Harju</option></select>
+        </div>
+        <div class="bf-row one">
+          <label>Address
+            <input type="text" id="bf-addr" placeholder="Street, house — e.g. Heki 34, Haabneeme" autocomplete="street-address">
           </label>
+          <a class="maplink" id="bf-map" href="#" target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            Check the point on Google Maps
+          </a>
         </div>
         <div class="bf-row">
           <label>Date <input type="date"></label>
@@ -518,6 +672,42 @@
   },{threshold:.1});
   document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
 
+
+  // scrollspy for anchor nav
+  (function(){
+    var links=[].slice.call(document.querySelectorAll('.anchors a'));
+    if(!links.length)return;
+    var map={};
+    links.forEach(function(l){var s=document.querySelector(l.getAttribute('href'));if(s)map[s.id]=l});
+    var spy=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(l){l.classList.remove('cur')});
+          var l=map[e.target.id]; if(l)l.classList.add('cur');
+        }
+      });
+    },{rootMargin:'-30% 0px -60% 0px'});
+    Object.keys(map).forEach(function(id){spy.observe(document.getElementById(id))});
+  })();
+
+  // mobile fullscreen menu
+  function toggleMenu(){
+    var open=document.body.classList.toggle('menu-open');
+    document.getElementById('mburger').setAttribute('aria-expanded',open);
+    document.getElementById('mmenu').setAttribute('aria-hidden',!open);
+  }
+
+  // address -> google maps point
+  (function(){
+    var inp=document.getElementById('bf-addr'), a=document.getElementById('bf-map');
+    if(!inp||!a)return;
+    function upd(){
+      var v=inp.value.trim();
+      if(v){a.classList.remove('off');a.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(v+', Estonia')}
+      else{a.classList.add('off');a.href='#'}
+    }
+    inp.addEventListener('input',upd);upd();
+  })();
 </script>
 </body>
 </html>
