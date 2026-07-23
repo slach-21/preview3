@@ -332,6 +332,23 @@
   .talk-btns .btn{padding:13px 18px;font-size:12.5px;gap:9px}
   .talk-wa svg{color:var(--brass)}
   .talk-wa:hover svg{color:currentColor}
+
+  /* custom date picker */
+  #bf-date{cursor:pointer;caret-color:transparent}
+  .cal{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:30;background:var(--paper);
+    border:2px solid var(--ink);padding:14px;box-shadow:0 14px 34px rgba(24,19,9,.18)}
+  .cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .cal-h b{font-family:var(--fr);font-style:italic;font-weight:600;font-size:16px;letter-spacing:.02em}
+  .cal-nav{width:34px;height:34px;border:1.5px solid var(--ink);background:none;color:var(--ink);cursor:pointer;font-size:14px}
+  .cal-nav:hover{background:var(--ink);color:var(--paper)}
+  .cal-w{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:9.5px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px}
+  .cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+  .cal-g button{aspect-ratio:1;border:0;background:none;font:600 13px var(--ar);color:var(--ink);cursor:pointer}
+  .cal-g button:hover{background:rgba(24,19,9,.08)}
+  .cal-g button.off{color:rgba(94,86,69,.35);pointer-events:none}
+  .cal-g button.today{box-shadow:inset 0 0 0 1.5px var(--brass)}
+  .cal-g button.sel{background:var(--brass);color:#fff}
 </style>
 </head>
 <body>
@@ -616,7 +633,18 @@
           </a>
         </div>
         <div class="bf-row">
-          <label>Date <input type="date"></label>
+          <label style="position:relative">Date
+            <input type="text" id="bf-date" placeholder="Pick a date" readonly>
+            <div class="cal" id="cal" hidden>
+              <div class="cal-h">
+                <button type="button" class="cal-nav" data-m="-1" aria-label="Previous month">←</button>
+                <b id="cal-title"></b>
+                <button type="button" class="cal-nav" data-m="1" aria-label="Next month">→</button>
+              </div>
+              <div class="cal-w"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+              <div class="cal-g" id="cal-grid"></div>
+            </div>
+          </label>
           <label>Time
             <select><option>10:00</option><option>12:00</option><option>14:00</option><option>16:00</option><option>18:00</option><option>20:00</option></select>
           </label>
@@ -707,6 +735,43 @@
       else{a.classList.add('off');a.href='#'}
     }
     inp.addEventListener('input',upd);upd();
+  })();
+
+  // custom calendar
+  (function(){
+    var inp=document.getElementById('bf-date'), cal=document.getElementById('cal');
+    if(!inp||!cal)return;
+    var title=document.getElementById('cal-title'), grid=document.getElementById('cal-grid');
+    var MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var today=new Date(); today.setHours(0,0,0,0);
+    var view=new Date(today.getFullYear(),today.getMonth(),1), sel=null;
+    function render(){
+      title.textContent=MN[view.getMonth()]+' '+view.getFullYear();
+      grid.innerHTML='';
+      var first=(new Date(view.getFullYear(),view.getMonth(),1).getDay()+6)%7;
+      var days=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+      for(var i=0;i<first;i++){grid.appendChild(document.createElement('span'))}
+      for(var d=1;d<=days;d++){
+        var b=document.createElement('button'); b.type='button'; b.textContent=d;
+        var dt=new Date(view.getFullYear(),view.getMonth(),d);
+        if(dt<today)b.className='off';
+        if(dt.getTime()===today.getTime())b.classList.add('today');
+        if(sel&&dt.getTime()===sel.getTime())b.classList.add('sel');
+        b.addEventListener('click',(function(dt){return function(){
+          sel=dt;
+          inp.value=dt.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+          cal.hidden=true; render();
+        }})(dt));
+        grid.appendChild(b);
+      }
+    }
+    cal.querySelectorAll('.cal-nav').forEach(function(n){
+      n.addEventListener('click',function(){view.setMonth(view.getMonth()+parseInt(n.dataset.m,10));render()});
+    });
+    inp.addEventListener('click',function(e){e.stopPropagation();cal.hidden=!cal.hidden;render()});
+    cal.addEventListener('click',function(e){e.stopPropagation()});
+    document.addEventListener('click',function(){cal.hidden=true});
+    render();
   })();
 </script>
 </body>
