@@ -24,7 +24,7 @@
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{background:var(--paper);color:var(--ink);font-family:var(--ar);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  img{max-width:100%;display:block}
+  img{max-width:100%;height:auto;display:block}
   a{color:inherit;text-decoration:none}
   ::selection{background:var(--ink);color:var(--paper)}
   .wrap{max-width:1180px;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
@@ -198,9 +198,17 @@
   .book-form label{display:block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
   .book-form input,.book-form select{
     display:block;width:100%;margin-top:6px;padding:12px 12px;font:500 15px/1.3 var(--ar);
-    color:var(--ink);background:#fff;border:1px solid rgba(24,19,9,.35);border-radius:0;-webkit-appearance:none;appearance:auto;
+    color:var(--ink);background:transparent;border:none;border-bottom:2px solid rgba(24,19,9,.4);
+    border-radius:0;-webkit-appearance:none;appearance:none;
   }
-  .book-form input:focus,.book-form select:focus{outline:2px solid var(--brass);outline-offset:0;border-color:var(--brass)}
+  .book-form select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238F6B2C' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 6px center;padding-right:30px;cursor:pointer;
+  }
+  .book-form input::placeholder{color:rgba(94,86,69,.65)}
+  .book-form input:focus,.book-form select:focus{outline:none;border-bottom-color:var(--brass);box-shadow:0 2px 0 0 var(--brass)}
+  .book-form input[type="date"]{min-height:46px}
+  .book-form input[type="date"]::-webkit-calendar-picker-indicator{opacity:.55;cursor:pointer}
   .bf-note{margin-top:12px;font-family:var(--fr);font-style:italic;font-size:13px;color:var(--ink2);text-align:center}
 
   .rv{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
